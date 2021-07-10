@@ -45,10 +45,16 @@ body {
   
   #summary address {
     font-weight: bold;
+
+
   }
   
   #summary time {
     font-weight: bold;
+  }
+  #summary a {
+    color :white;
+    text-decoration:none;
   }
   
   main {
@@ -60,3 +66,9 @@ body {
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
+  .tag{
+    background-color: white;
+    color:#5706c0;
+    padding: 0.5rem 1rem;
+    border-radius:8px;
+    }

@@ -1,0 +1,26 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}
+Thank you
+{% endblock %}
+
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/posts.css' %}"/>
+<link rel="stylesheet" href="{% static 'blog/about.css' %}" />
+{% endblock css_files %}
+
+{% block content %}
+
+
+<section id="about">
+    <h2>Thank you!!!!</h2>
+<!--    <img src="https://www.theblogstarter.com/wp-content/uploads/2014/02/scott-full-210x300.jpg" width="210" height="300" align="top">-->
+    <p>
+        {{ message }}
+    </p>
+</section>
+{% endblock content %}
