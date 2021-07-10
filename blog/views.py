@@ -114,10 +114,24 @@ class PostsView(ListView):
 #         return render(request, "blog/post_detail.html", {"post": selected_post, "post_tags": post_tags})
 #     else:
 #         return HttpResponseNotFound("Post Not Found")
-class PostsDetailView(DetailView,):
-    template_name = "blog/post_detail.html"
+# class PostsDetailView(DetailView):
+#     model = Post
+#     template_name = "blog/post_detail.html"
+#     context_object_name = "posts"
+#     query_pk_and_slug = True
+class PostsDetailView(DetailView):
     model=Post
-    context_object_name = "posts"
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     selected_post=Post.objects.get(slug=slug)
+    #     tags=selected_post.all()
+    #     context=super().get_context_data(**kwargs)
+    #     context["post_tags"]=tags
+    #     return context
+
+
+
 
 class CommentView(View):
     def get(self, request):
@@ -152,17 +166,17 @@ class CarrersView(TemplateView):
 #     return render(request, "blog/carrers.html")
 
 
-class CommentView(View):
-    def get(self, request):
-        form = CommentForm()
-        return render(request, "blog/comment.html", {"form": form})
-
-    def post(self, request):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/thank-you")
-        return render(request,"blog/comment.html",{"form":form })
+# class CommentView(View):
+#     def get(self, request):
+#         form = CommentForm()
+#         return render(request, "blog/comment.html", {"form": form})
+#
+#     def post(self, request):
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect("/thank-you")
+#         return render(request,"blog/comment.html",{"form":form })
 
 
 class ThankYouView(TemplateView):
@@ -184,11 +198,11 @@ class ThankYouView(TemplateView):
 
 #
 
-
-def showcomments(request):
-    form=CommentForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-    context={'form':form}
-    return render(request,'blog/comment.html',context)
+#
+# def showcomments(request):
+#     form=CommentForm(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#     context={'form':form}
+#     return render(request,'blog/comment.html',context)
 
