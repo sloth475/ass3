@@ -1,3 +1,5 @@
+from typing import List
+
 from django import forms
 from django.forms import fields, widgets
 from .models import Comment
@@ -14,12 +16,13 @@ from .models import Comment
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = "__all__"
+        exclude = ["post"]
+        # fields = "__all__"
         labels = {
             "user_name": "Your Name",
             "user_email": "Your email",
             "text": "Your Comment",
-            "post":"Choose Post",
+
 
         }
         error_messages = {

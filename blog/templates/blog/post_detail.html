@@ -10,14 +10,46 @@
 {% endblock %}
 
 {% block content %}
+<div id ="alert">
+    <h2>
+        Saving the comment failed!!
+    </h2>
+    {% if comment_form.errors %}
+        <p>Please check the comments!!There are some errors.</p>
+    <a href="#comment-form">Fix!</a>
+    </div>
+    {% endif %}
+
+
 <section id="summary">
 <h2>{{ post.title|title }}</h2>
-    <p>
-        {% for tag in post_tags %}
+    <div>
+    {% for tag in post_tags %}
+    <span class ="tag">{{tag.caption}}</span>
+    {% endfor %}
+    </div>
+    <div id="read_later">
 
-        <span class ='tag'>{{ tag.caption }} </span>
-        {% endfor %}
-    </p>
+        <form method="POST" action="{% url 'read-later' %}">
+            {% csrf_token %}
+        <input type="hidden" name="read_later_id" value="{{ post.id }}" />
+        <button>
+        {% if not is_read_for_later %}
+            Read Later
+        {% else %}
+            Remove from "Read Later" List
+        {% endif %}
+        </button>
+
+
+
+
+
+    </form>
+    </div>
+
+
+
 <article>
     <img src="{% static 'blog/images/'|add:post.image %}" alt=""/>
     <address>By <a href="mailto:{{ post.author.email_id }}">{{ post.author }}</a></address>
@@ -30,4 +62,28 @@
     {{ post.content|linebreaks }}
 
 </main>
+<section id ="comments">
+    <ul>
+    {% for comment in comments %}
+    <li>
+        <h2>{{ comment.user_name }}</h2>
+        <p>{{ comment.text|linebreaks }}</p>
+    </li>
+    {% endfor %}
+    </ul>
+</section>
+<section id="comments-form">
+    <h2>Your Comments</h2>
+    <form method = "POST" action="{% url 'selected-post' post.slug %}">
+        {% csrf_token %}
+        {% for fields in comment_form %}
+        <div class="form-control{% if fields.errors %}invalid{% endif%}">
+            {{ fields.label_tag }}
+            {{ fields }}
+            {{ feilds.errors }}
+        {% endfor %}
+        </div>
+        <button>save comment</button>
+    </form>
+</section>
 {% endblock %}

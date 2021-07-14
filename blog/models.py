@@ -39,4 +39,4 @@ class Comment(models.Model):
     user_name = models.CharField(max_length=50,default="rashmi")
     user_email = models.CharField(max_length=50,null=True)
     text = models.CharField(max_length=500,null=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name="comments")#to access all comments in post.

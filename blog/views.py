@@ -6,70 +6,9 @@ from blog.models import Post, Author, Tag, Comment
 from django.views import View
 from django.views.generic.base import TemplateView
 from .forms import CommentForm
+from django.urls import reverse
 
 
-# all_posts = [
-#     {
-#         "slug": "hike-in-the-mountains",
-#         "image": "mountains.jpg",
-#         "author": "Micheal",
-#         "date": date(2020, 7, 21),
-#         "title": "Mountain Hiking",
-#         "summary": "There's nothing like the views on a mountain hiking.I was not event prepared for the same.",
-#         "content": """
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#         """
-#     },
-#     {
-#         "slug": "python-is-fun",
-#         "image": "woods.jpg",
-#         "author": "Batman",
-#         "date": date(2020, 8, 20),
-#         "title": "Python is fun",
-#         "summary": "Python is much easier to, and perform development",
-#         "content": """
-#        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#        """
-#     },
-#     {
-#         "slug": "travel",
-#         "image": "travel.jpg",
-#         "author": "Superman",
-#         "date": date(2021, 3, 28),
-#         "title": "Travel around the world",
-#         "summary": "The article provides an insight on how should one travel",
-#         "content": """
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#         """
-#     },
-#     {
-#         "slug": "is-universe-expanding-too-much",
-#         "image": "universe.jpg",
-#         "author": "Mad Man",
-#         "date": date(2021, 6, 30),
-#         "title": "Is the universe expanding too much",
-#         "summary": "We will take about the expansion of the universe how various solar system are moving away",
-#         "content": """
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#
-#         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-#         """
-#     }
-# ]
 
 
 # def get_date(post):
@@ -119,18 +58,46 @@ class PostsView(ListView):
 #     template_name = "blog/post_detail.html"
 #     context_object_name = "posts"
 #     query_pk_and_slug = True
-class PostsDetailView(DetailView):
-    model=Post
-    template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     selected_post=Post.objects.get(slug=slug)
-    #     tags=selected_post.all()
-    #     context=super().get_context_data(**kwargs)
-    #     context["post_tags"]=tags
-    #     return context
+# class PostsDetailView(DetailView):
+#     model=Post
+#     template_name = 'blog/post_detail.html'
+#     context_object_name = 'post'
+#     def get_context_data(self, **kwargs):
+#         # selected_post=Post.objects.get(slug=slug)
+#         tags=self.get_object().tags.all()
+#         context=super().get_context_data(**kwargs)
+#         context["post_tags"]=tags
+#         context["comment_form"]=CommentForm()
+#         return context
 
+class PostsDetailView(View):
 
+    def is_read_later(self, request, post_id):
+        stored_post_ids = request.session.get("stored_posts")
+        if stored_post_ids is not None:
+            return post_id in stored_post_ids
+        return False
+
+    def get(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        comment_form = CommentForm()
+        print(self.is_read_later(request, post.id))
+        return render(request, "blog/post_detail.html",
+                      {"post": post, "post_tags": post.tags.all(), "comments": post.comments.all().order_by("-id"), "comment_form": comment_form,
+                          "is_read_for_later": self.is_read_later(request, post.id)})
+
+    def post(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_form = comment_form.save(commit=False)
+            comment_form.post = post
+            comment_form.save()
+            url = reverse("selected-post", args=[slug, ])
+            return HttpResponseRedirect(url)
+        return render(request, "blog/post_detail.html",
+                      {"post": post, "post_tags": post.tags.all(), "comments": post.comments.all().order_by("-id"), "comment_form": comment_form,
+                          "is_read_for_later": self.is_read_later(request, post.id)})
 
 
 class CommentView(View):
@@ -206,3 +173,28 @@ class ThankYouView(TemplateView):
 #     context={'form':form}
 #     return render(request,'blog/comment.html',context)
 
+class ReadLaterView(View):
+    def get(self, request):
+        stored_posts_ids = request.session.get("stored_posts")
+        context = {}
+        if stored_posts_ids is not None:
+            posts = Post.objects.filter(id__in=stored_posts_ids)
+            context ["posts"] = posts
+            context ["has_posts"] = True
+        else:
+            context ["has_posts"] = False
+        return render(request, "blog/stored_posts.html", context)
+
+    def post(self, request):
+        read_later_id = request.POST ["read_later_id"]
+        post_id = int(read_later_id)
+        stored_posts_ids = request.session.get("stored_posts")
+        if stored_posts_ids is None or len(stored_posts_ids)==0:
+            stored_posts_ids = [post_id, ]
+        else:
+            if post_id not in stored_posts_ids:
+                stored_posts_ids.append(post_id)
+            else:
+                stored_posts_ids.remove(post_id)
+        request.session ["stored_posts"] = stored_posts_ids
+        return HttpResponseRedirect("/")
