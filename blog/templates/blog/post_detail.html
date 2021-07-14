@@ -41,9 +41,21 @@
         {% endif %}
         </button>
 
+    </form>
+    </div>
 
+    <div id="read_later">
 
-
+        <form method="POST" action="{% url 'fav-posts' %}">
+            {% csrf_token %}
+        <input type="hidden" name="fav_posts_id" value="{{ post.id }}" />
+        <button>
+        {% if not is_fav_posts %}
+            Favourite
+        {% else %}
+            Remove from "Fav" List
+        {% endif %}
+        </button>
 
     </form>
     </div>

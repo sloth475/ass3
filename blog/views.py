@@ -166,12 +166,7 @@ class ThankYouView(TemplateView):
 #
 
 #
-# def showcomments(request):
-#     form=CommentForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#     context={'form':form}
-#     return render(request,'blog/comment.html',context)
+
 
 class ReadLaterView(View):
     def get(self, request):
@@ -197,4 +192,31 @@ class ReadLaterView(View):
             else:
                 stored_posts_ids.remove(post_id)
         request.session ["stored_posts"] = stored_posts_ids
+        return HttpResponseRedirect("/")
+
+
+class FavPostView(View):
+    def get(self, request):
+        fav_posts_ids = request.session.get("fav_posts")
+        context = {}
+        if fav_posts_ids is not None:
+            posts = Post.objects.filter(id__in=fav_posts_ids)
+            context ["posts"] = posts
+            context ["has_posts"] = True
+        else:
+            context ["has_posts"] = False
+        return render(request, "blog/fav_posts.html", context)
+
+    def post(self, request):
+        fav_posts_id = request.POST ["fav_posts_id"]
+        post_id = int(fav_posts_id)
+        fav_posts_ids = request.session.get("fav_posts")
+        if fav_posts_ids is None or len(fav_posts_ids)==0:
+            fav_posts_ids = [post_id, ]
+        else:
+            if post_id not in fav_posts_ids:
+                fav_posts_ids.append(post_id)
+            else:
+                fav_posts_ids.remove(post_id)
+        request.session ["fav_posts"] = fav_posts_ids
         return HttpResponseRedirect("/")

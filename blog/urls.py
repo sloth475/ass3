@@ -11,6 +11,7 @@ urlpatterns = [
     path("carrers/",views.CarrersView.as_view(),name="carrers"),
     path("comment/",views.CommentView.as_view()),
     path("read-later/",views.ReadLaterView.as_view(), name="read-later"),
+    path("fav/",views.FavPostView.as_view(), name="fav-posts"),
 
     path("thank-you/",views.ThankYouView.as_view(),name="thank-you")
 
