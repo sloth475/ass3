@@ -2,7 +2,7 @@ from typing import List
 
 from django import forms
 from django.forms import fields, widgets
-from .models import Comment
+from .models import Comment,Post
 
 # class ReviewForm(forms.Form):
 #     user_name = forms.CharField(label="Your name", max_length=50, error_messages={
@@ -31,3 +31,8 @@ class CommentForm(forms.ModelForm):
                 "max_length": "Please enter a shorter name"
             }
         }
+
+class UploadForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        fields= "__all__"

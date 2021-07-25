@@ -1,25 +1,17 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, FormView
+from rest_framework.generics import get_object_or_404
 
 from blog.models import Post, Author, Tag, Comment
 from django.views import View
 from django.views.generic.base import TemplateView
-from .forms import CommentForm
+from .forms import CommentForm, UploadForm
 from django.urls import reverse
+from .models import Post
 
-
-
-
-# def get_date(post):
-#     return post['date']
-
-# def starting_page(request):
-#     # sorted_post = sorted(all_posts, key=get_date)
-#     # latest_posts = sorted_post[-3:]
-#     latest = Post.objects.all().order_by('-date') [:2]
-#     # print("last",latest)
-#     return render(request, "blog/index.html", {"posts": latest})
 
 
 class StartingPageView(TemplateView):
@@ -43,32 +35,7 @@ class PostsView(ListView):
 
 
 
-# def post_detail(request, post_slug):  # add ref to comment form here
-#     selected_post = Post.objects.get(slug=post_slug)
-#     post_tags = selected_post.tags.all()
-#     # selected_post = next((post for post in all_posts if post['slug'] == post_slug), False)
-#     # print("tags",post_tags)
-#
-#     if selected_post:
-#         return render(request, "blog/post_detail.html", {"post": selected_post, "post_tags": post_tags})
-#     else:
-#         return HttpResponseNotFound("Post Not Found")
-# class PostsDetailView(DetailView):
-#     model = Post
-#     template_name = "blog/post_detail.html"
-#     context_object_name = "posts"
-#     query_pk_and_slug = True
-# class PostsDetailView(DetailView):
-#     model=Post
-#     template_name = 'blog/post_detail.html'
-#     context_object_name = 'post'
-#     def get_context_data(self, **kwargs):
-#         # selected_post=Post.objects.get(slug=slug)
-#         tags=self.get_object().tags.all()
-#         context=super().get_context_data(**kwargs)
-#         context["post_tags"]=tags
-#         context["comment_form"]=CommentForm()
-#         return context
+
 
 class PostsDetailView(View):
 
@@ -125,25 +92,7 @@ class CarrersView(TemplateView):
     template_name = "blog/carrers.html"
 
 
-# def about(request):
-#     return render(request, "blog/about.html")
-# def policy(request):
-#     return render(request, "blog/policy.html")
-# def carrers(request):
-#     return render(request, "blog/carrers.html")
 
-
-# class CommentView(View):
-#     def get(self, request):
-#         form = CommentForm()
-#         return render(request, "blog/comment.html", {"form": form})
-#
-#     def post(self, request):
-#         form = CommentForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect("/thank-you")
-#         return render(request,"blog/comment.html",{"form":form })
 
 
 class ThankYouView(TemplateView):
@@ -220,3 +169,30 @@ class FavPostView(View):
                 fav_posts_ids.remove(post_id)
         request.session ["fav_posts"] = fav_posts_ids
         return HttpResponseRedirect("/")
+
+#
+#
+def create_view(request):
+    context={}
+    form=UploadForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/thank-you")
+    context['form']=form
+    return render(request,"blog/create_view.html",context)
+
+
+
+
+def update_view(request,id):
+    context={}
+    obj=get_object_or_404(Post,id=id)
+    form=UploadForm(request.POST or None,instance = obj)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/" + id)
+
+        # add form dictionary to context
+    context ["form"] = form
+
+    return render(request, "blog/update_view.html", context)
